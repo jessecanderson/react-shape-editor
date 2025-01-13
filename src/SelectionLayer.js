@@ -80,15 +80,15 @@ const getNextRectOfSelectionChildConstrained = (
   return { x, y, width: right - x, height: bottom - y };
 };
 
-const getSelectionRect = childRects => {
-  const selectionX = Math.min(...childRects.map(c => c.x));
-  const selectionY = Math.min(...childRects.map(c => c.y));
+const getSelectionRect = (childRects) => {
+  const selectionX = Math.min(...childRects.map((c) => c.x));
+  const selectionY = Math.min(...childRects.map((c) => c.y));
 
   return {
     x: selectionX,
     y: selectionY,
-    height: Math.max(...childRects.map(c => c.y + c.height)) - selectionY,
-    width: Math.max(...childRects.map(c => c.x + c.width)) - selectionX,
+    height: Math.max(...childRects.map((c) => c.y + c.height)) - selectionY,
+    width: Math.max(...childRects.map((c) => c.x + c.width)) - selectionX,
   };
 };
 
@@ -108,9 +108,8 @@ class SelectionLayer extends Component {
     this.onChildRectChanged = this.onChildRectChanged.bind(this);
     this.onChildFocus = this.onChildFocus.bind(this);
     this.onChildToggleSelection = this.onChildToggleSelection.bind(this);
-    this.onSelectionShapeMountedOrUnmounted = this.onSelectionShapeMountedOrUnmounted.bind(
-      this
-    );
+    this.onSelectionShapeMountedOrUnmounted =
+      this.onSelectionShapeMountedOrUnmounted.bind(this);
 
     this.callbacks = {
       ...props.callbacks,
@@ -133,7 +132,7 @@ class SelectionLayer extends Component {
       // Otherwise, no change
       if (
         this.props.selectedShapeIds.filter(
-          shapeId => this.wrappedShapes[shapeId]
+          (shapeId) => this.wrappedShapes[shapeId]
         ).length >= 2
       ) {
         this.forceUpdate();
@@ -238,7 +237,7 @@ class SelectionLayer extends Component {
       }
     } else if (selectedShapeIds.length >= 2) {
       // Only deselect when it is a group selection
-      onSelectionChange(selectedShapeIds.filter(id => id !== targetShapeId));
+      onSelectionChange(selectedShapeIds.filter((id) => id !== targetShapeId));
     }
   }
 
@@ -257,16 +256,18 @@ class SelectionLayer extends Component {
       dragStartCoordinates,
       dragCurrentCoordinates
     );
-    const selectedShapeIds = Object.keys(this.wrappedShapes).filter(shapeId => {
-      const { x, y, width, height } = this.wrappedShapes[shapeId].props;
+    const selectedShapeIds = Object.keys(this.wrappedShapes).filter(
+      (shapeId) => {
+        const { x, y, width, height } = this.wrappedShapes[shapeId].props;
 
-      return (
-        x + width > selectRect.x &&
-        x < selectRect.x + selectRect.width &&
-        y + height > selectRect.y &&
-        y < selectRect.y + selectRect.height
-      );
-    });
+        return (
+          x + width > selectRect.x &&
+          x < selectRect.x + selectRect.width &&
+          y + height > selectRect.y &&
+          y < selectRect.y + selectRect.height
+        );
+      }
+    );
 
     this.setState(defaultDragState);
     this.props.onSelectionChange(selectedShapeIds);
@@ -348,11 +349,8 @@ class SelectionLayer extends Component {
       vectorHeight,
       vectorWidth,
     } = this.props;
-    const {
-      dragCurrentCoordinates,
-      dragStartCoordinates,
-      isMouseDown,
-    } = this.state;
+    const { dragCurrentCoordinates, dragStartCoordinates, isMouseDown } =
+      this.state;
 
     const draggedRect = isMouseDown
       ? getRectFromCornerCoordinates(
@@ -362,7 +360,7 @@ class SelectionLayer extends Component {
       : null;
 
     const selectedShapes = selectedShapeIds
-      .map(shapeId => this.wrappedShapes[shapeId])
+      .map((shapeId) => this.wrappedShapes[shapeId])
       .filter(Boolean);
 
     let extra = null;
@@ -382,26 +380,22 @@ class SelectionLayer extends Component {
         );
       }
     } else if (selectedShapes.length >= 2) {
-      const selectionRect = getSelectionRect(selectedShapes.map(s => s.props));
+      const selectionRect = getSelectionRect(
+        selectedShapes.map((s) => s.props)
+      );
       extra = (
         <SelectionComponent
           keyboardTransformMultiplier={keyboardTransformMultiplier}
           {...selectionComponentProps}
           shapeId={SELECTION_COMPONENT_SHAPE_ID}
           isInternalComponent
-          ref={el => {
+          ref={(el) => {
             this.selectionEl = el;
           }}
-          onIntermediateChange={intermediateRect => {
-            selectedShapes.forEach(shape => {
-              const {
-                constrainMove,
-                constrainResize,
-                x,
-                y,
-                width,
-                height,
-              } = shape.props;
+          onIntermediateChange={(intermediateRect) => {
+            selectedShapes.forEach((shape) => {
+              const { constrainMove, constrainResize, x, y, width, height } =
+                shape.props;
 
               const tempRect = getNextRectOfSelectionChildConstrained(
                 selectionRect,
@@ -413,19 +407,16 @@ class SelectionLayer extends Component {
               shape.simulateTransform(tempRect);
             });
           }}
-          onDelete={event => {
-            onDelete(event, selectedShapes.map(shape => shape.props));
+          onDelete={(event) => {
+            onDelete(
+              event,
+              selectedShapes.map((shape) => shape.props)
+            );
           }}
-          onChange={nextSelectionRect => {
-            const nextRects = selectedShapes.map(shape => {
-              const {
-                constrainMove,
-                constrainResize,
-                x,
-                y,
-                width,
-                height,
-              } = shape.props;
+          onChange={(nextSelectionRect) => {
+            const nextRects = selectedShapes.map((shape) => {
+              const { constrainMove, constrainResize, x, y, width, height } =
+                shape.props;
 
               return getNextRectOfSelectionChildConstrained(
                 selectionRect,
@@ -437,11 +428,14 @@ class SelectionLayer extends Component {
             });
 
             // Restore the shapes back to their original positions
-            selectedShapes.forEach(shape => {
+            selectedShapes.forEach((shape) => {
               shape.simulateTransform(null);
             });
 
-            onChange(nextRects, selectedShapes.map(shape => shape.props));
+            onChange(
+              nextRects,
+              selectedShapes.map((shape) => shape.props)
+            );
           }}
           scale={scale}
           height={selectionRect.height}
@@ -459,7 +453,7 @@ class SelectionLayer extends Component {
           width={vectorWidth}
           height={vectorHeight}
           fill="transparent"
-          onMouseDown={event => {
+          onMouseDown={(event) => {
             const startCoordinates = getPlaneCoordinatesFromEvent(event);
             setMouseHandler(this.mouseHandler);
             this.setState({

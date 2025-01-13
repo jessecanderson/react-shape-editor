@@ -29,12 +29,10 @@ function wrapShape(WrappedComponent) {
 
       this.onMouseUp = this.onMouseUp.bind(this);
       this.onMouseMove = this.onMouseMove.bind(this);
-      this.getParentCoordinatesForMove = this.getParentCoordinatesForMove.bind(
-        this
-      );
-      this.getParentCoordinatesForResize = this.getParentCoordinatesForResize.bind(
-        this
-      );
+      this.getParentCoordinatesForMove =
+        this.getParentCoordinatesForMove.bind(this);
+      this.getParentCoordinatesForResize =
+        this.getParentCoordinatesForResize.bind(this);
       this.forceFocus = this.forceFocus.bind(this);
       this.keyboardMove = this.keyboardMove.bind(this);
       this.keyboardResize = this.keyboardResize.bind(this);
@@ -116,11 +114,8 @@ function wrapShape(WrappedComponent) {
       }
 
       const { onChange } = this.props;
-      const {
-        dragStartCoordinates,
-        dragCurrentCoordinates,
-        isDragToMove,
-      } = this.state;
+      const { dragStartCoordinates, dragCurrentCoordinates, isDragToMove } =
+        this.state;
 
       if (isDragToMove) {
         const { x: nextX, y: nextY } = dragCurrentCoordinates;
@@ -185,12 +180,8 @@ function wrapShape(WrappedComponent) {
     }
 
     getParentCoordinatesForMove(event) {
-      const {
-        constrainMove,
-        width,
-        height,
-        getPlaneCoordinatesFromEvent,
-      } = this.props;
+      const { constrainMove, width, height, getPlaneCoordinatesFromEvent } =
+        this.props;
       const { dragCurrentCoordinates, dragInnerOffset } = this.state;
 
       const { x: rawX, y: rawY } = getPlaneCoordinatesFromEvent(
@@ -404,7 +395,7 @@ function wrapShape(WrappedComponent) {
         ['sw', 'sw', 'nesw-resize', 0, height, null],
         ['se', 'se', 'nwse-resize', width, height, null],
       ]
-        .filter(a => a)
+        .filter((a) => a)
         .map(
           ([handleName, movementReferenceCorner, cursor, x, y, dragLock]) => (
             <ResizeHandleComponent
@@ -414,12 +405,11 @@ function wrapShape(WrappedComponent) {
               cursor={cursor}
               isInSelectionGroup={isInSelectionGroup}
               name={handleName}
-              onMouseDown={event => {
+              onMouseDown={(event) => {
                 event.stopPropagation();
 
-                const { x: planeX, y: planeY } = getPlaneCoordinatesFromEvent(
-                  event
-                );
+                const { x: planeX, y: planeY } =
+                  getPlaneCoordinatesFromEvent(event);
 
                 const movingPoint = movementPoints[movementReferenceCorner];
                 const anchorPoint = anchorPoints[movementReferenceCorner];
@@ -456,22 +446,22 @@ function wrapShape(WrappedComponent) {
             outline: 'none',
             ...(disabled ? { pointerEvents: 'none' } : {}),
           }}
-          ref={el => {
+          ref={(el) => {
             this.wrapperEl = el;
           }}
           focusable={!disabled ? true : undefined} // IE11 support
           tabIndex={!disabled ? 0 : undefined}
-          onFocus={event => {
+          onFocus={(event) => {
             this.gotFocusAfterClick = true;
             onChildFocus(shapeId, isInternalComponent);
             this.setState({ nativeActive: true });
             onFocus(event, this.props);
           }}
-          onBlur={event => {
+          onBlur={(event) => {
             this.setState({ nativeActive: false });
             onBlur(event, this.props);
           }}
-          onMouseDown={event => {
+          onMouseDown={(event) => {
             event.stopPropagation();
 
             // Focusing support for Safari
@@ -497,9 +487,8 @@ function wrapShape(WrappedComponent) {
             }
 
             const { x, y } = this.props;
-            const { x: planeX, y: planeY } = getPlaneCoordinatesFromEvent(
-              event
-            );
+            const { x: planeX, y: planeY } =
+              getPlaneCoordinatesFromEvent(event);
             const dragInnerOffset = {
               x: planeX - x,
               y: planeY - y,
@@ -517,7 +506,7 @@ function wrapShape(WrappedComponent) {
               isDragToMove: true,
             });
           }}
-          onKeyDown={event => {
+          onKeyDown={(event) => {
             onKeyDown(event, this.props);
 
             // If the user-defined callback called event.preventDefault(),
@@ -623,9 +612,9 @@ function wrapShape(WrappedComponent) {
     wrapperProps: {},
   };
 
-  WrappedShape.displayName = `wrapShape(${WrappedComponent.displayName ||
-    WrappedComponent.name ||
-    'Component'})`;
+  WrappedShape.displayName = `wrapShape(${
+    WrappedComponent.displayName || WrappedComponent.name || 'Component'
+  })`;
 
   return withContext(WrappedShape);
 }

@@ -17,9 +17,8 @@ class ShapeEditor extends Component {
     this.wrappedShapes = [];
     this.justAddedShapes = [];
 
-    this.getPlaneCoordinatesFromEvent = this.getPlaneCoordinatesFromEvent.bind(
-      this
-    );
+    this.getPlaneCoordinatesFromEvent =
+      this.getPlaneCoordinatesFromEvent.bind(this);
     this.onMouseEvent = this.onMouseEvent.bind(this);
     this.onShapeMountedOrUnmounted = this.onShapeMountedOrUnmounted.bind(this);
     this.setMouseHandler = this.setMouseHandler.bind(this);
@@ -43,7 +42,7 @@ class ShapeEditor extends Component {
     } else if (this.lastDeletedRect && this.props.focusOnDelete) {
       // If something was deleted since the last update, focus on the
       // next closest shape by center coordinates
-      const getShapeCenter = shape => ({
+      const getShapeCenter = (shape) => ({
         x: shape.x + shape.width / 2,
         y: shape.y + shape.height / 2,
       });
@@ -51,7 +50,7 @@ class ShapeEditor extends Component {
 
       let closestDistance = Math.MAX_SAFE_INTEGER || 2 ** 53 - 1;
       let closestShape = null;
-      this.wrappedShapes.forEach(shape => {
+      this.wrappedShapes.forEach((shape) => {
         const shapeCenter = getShapeCenter(shape.props);
         const distance =
           (deletedShapeCenter.x - shapeCenter.x) ** 2 +
@@ -97,7 +96,7 @@ class ShapeEditor extends Component {
         width: instance.props.width,
         height: instance.props.height,
       };
-      this.wrappedShapes = this.wrappedShapes.filter(s => s !== instance);
+      this.wrappedShapes = this.wrappedShapes.filter((s) => s !== instance);
     }
   }
 
@@ -133,7 +132,7 @@ class ShapeEditor extends Component {
         width={vectorWidth * scale}
         height={vectorHeight * scale}
         viewBox={`0 0 ${vectorWidth} ${vectorHeight}`}
-        ref={el => {
+        ref={(el) => {
           this.svgEl = el;
         }}
         style={{

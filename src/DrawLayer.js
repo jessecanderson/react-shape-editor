@@ -116,11 +116,8 @@ class DrawLayer extends Component {
       vectorHeight,
       vectorWidth,
     } = this.props;
-    const {
-      dragCurrentCoordinates,
-      dragStartCoordinates,
-      isMouseDown,
-    } = this.state;
+    const { dragCurrentCoordinates, dragStartCoordinates, isMouseDown } =
+      this.state;
 
     const draggedRect = isMouseDown
       ? getRectFromCornerCoordinates(
@@ -136,7 +133,7 @@ class DrawLayer extends Component {
           width={vectorWidth}
           height={vectorHeight}
           fill="transparent"
-          onMouseDown={event => {
+          onMouseDown={(event) => {
             const startCoordinates = this.getCoordinatesFromEvent(event, true);
             setMouseHandler(this.mouseHandler);
             this.setState({
