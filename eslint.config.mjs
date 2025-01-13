@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import js from '@eslint/js';
 import { FlatCompat } from '@eslint/eslintrc';
 import babelParser from '@babel/eslint-parser';
+import react from 'eslint-plugin-react';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,6 +31,9 @@ export default [
         },
       },
     },
+    plugins: {
+      react,
+    },
     rules: {
       'import/prefer-default-export': 0,
       'react/destructuring-assignment': 0,
@@ -38,5 +42,6 @@ export default [
       'react/no-did-mount-set-state': 0,
       'react/sort-comp': 0,
     },
+    ignores: ['stories/'],
   },
 ];
